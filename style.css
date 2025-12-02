@@ -1,15 +1,162 @@
 body {
-    font-family: sans-serif;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('earthfromabove.avif');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: "Inter", sans-serif;
     margin: 0;
     padding: 0;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    min-height: 100vh;
+    padding-top: 80px; /* Add padding to prevent content from being hidden by the fixed header */
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-    text-align: center;
+html {
+    scroll-padding-top: 80px; /* Height of the fixed header */
 }
+
+/* Header and Navigation Bar */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+    padding: 0 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* Needed for absolute positioning of hamburger */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-text {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-menu {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.close-menu {
+    display: none; /* Hidden on desktop */
+}
+
+/* Media Query for narrower desktop screens */
+@media (min-width: 993px) and (max-width: 1300px) {
+    nav {
+        max-width: 95%; /* Allow nav to take more width */
+    }
+    .nav-links {
+        gap: 10px; /* Reduce gap between links */
+        font-size: 0.9em; /* Slightly smaller font for links */
+    }
+}
+
+
+/* Media Query for smaller screens */
+@media (max-width: 992px) {
+    nav {
+        justify-content: center; /* Center the logo */
+        position: relative; /* For absolute positioning of hamburger */
+    }
+
+    .hamburger-menu {
+        display: block; /* Show hamburger on mobile */
+        position: absolute; /* Position it absolutely */
+        left: 20px; /* Align to the left */
+        top: 50%; /* Center vertically */
+        transform: translateY(-50%); /* Adjust for vertical centering */
+        z-index: 1002; /* Ensure it's above the nav-links */
+    }
+
+    .logo-container {
+        flex-grow: 0; /* Don't let it grow */
+        justify-content: center;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Initially hidden off-screen */
+        height: 100vh;
+        width: 70%;
+        max-width: 300px;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 60px 20px 20px;
+        gap: 25px;
+        transition: left 0.3s ease-in-out;
+        z-index: 1001;
+    }
+
+    .nav-links.mobile-menu-open {
+        left: 0; /* Slide in from the left */
+    }
+
+    .close-menu {
+        display: block; /* Show close button in mobile menu */
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 28px;
+    }
+}
+
 
 main {
     padding: 1rem;
@@ -24,3 +171,129 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.box {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    width: 75%;
+    max-width: 1000px; /* Set a fixed width for all boxes */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Override .box width for feature boxes within features-wrapper */
+.features-wrapper {
+    display: flex;
+    flex-direction: column; /* Force stacking */
+    justify-content: center;
+    align-items: center; /* Center the boxes when stacking */
+    width: 100%;
+}
+
+
+#logo-box {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: center; /* Horizontally center items */
+    gap: 10px; /* Add some space between the image and the title */
+}
+
+.flex-content {
+    display: flex;
+    align-items: center; /* Vertically center the image and text */
+    gap: 10px; /* Space between image and text */
+    flex-wrap: wrap; /* Allow content to wrap if space is limited */
+}
+
+.flex-content .material-symbols-outlined {
+    font-size: 48px;
+    color: white;
+}
+
+
+h1, h2 {
+    font-weight: 300;
+}
+
+#cyclingtext-box {
+    height: 60px; /* Increased height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#text-cycler {
+    transition: opacity 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+#text-cycler.fade-out {
+    opacity: 0;
+}
+
+/* Explicit styles for <i> and <b> tags */
+i {
+    font-style: italic;
+}
+
+b {
+    font-weight: 700; /* A common weight for bold text */
+}
+
+
+.waitlist-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* Center the form elements */
+    width: 100%; /* Ensure form takes full width of its parent */
+}
+
+.waitlist-form label {
+    font-size: 1.1em;
+    color: white;
+    width: 80%; /* Match width of input/textarea */
+    display: flex; /* Use flexbox for label content */
+    flex-direction: column; /* Stack label text and input */
+    align-items: flex-start; /* Align label text to the start */
+    text-align: left; /* Align text within label */
+}
+
+.waitlist-form input[type="email"],
+.waitlist-form textarea {
+    width: 100%; /* Take full width of its parent label */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: "Inter", sans-serif;
+    margin-top: 5px; /* Space between label text and input */
+}
+
+.waitlist-form input[type="email"]::placeholder,
+.waitlist-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.waitlist-form button {
+    background-color: rgba(0, 123, 255, 0.3); /* Semi-transparent version of blue */
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+    backdrop-filter: blur(5px); /* Glassy blur effect */
+    font-family: "Inter", sans-serif; /* Explicitly set font */
+}
+
+.waitlist-form button:hover {
+    background-color: rgba(0, 123, 255, 0.5); /* Slightly less transparent on hover */
+}
+ 
