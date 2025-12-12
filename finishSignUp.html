@@ -24,33 +24,51 @@
             <button onclick="copyToken()">Copy Token</button>
         </div>
     </div>
-    <script type="module">
-        import { completeSignIn } from './auth.js';
-        const mainStatus = document.getElementById('mainStatus');
-        const subStatus = document.getElementById('subStatus');
-        const tokenSection = document.getElementById('tokenSection');
-        const idTokenDisplay = document.getElementById('idTokenDisplay');
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                const user = await completeSignIn(window.location.href);
-                const idToken = await user.getIdToken();
-                mainStatus.style.display = 'none';
-                subStatus.style.display = 'none';
-                idTokenDisplay.value = idToken;
-                tokenSection.style.display = 'block';
-            } catch (error) {
-                mainStatus.textContent = 'Error';
-                subStatus.textContent = `Sign-in failed: ${error.message}`;
-                mainStatus.classList.add('error');
-            }
-        });
-        function copyToken() {
-            idTokenDisplay.select();
-            document.execCommand('copy');
-            subStatus.textContent = 'Token copied!';
-            subStatus.style.display = 'block';
-        }
-        window.copyToken = copyToken;
-    </script>
-</body>
+            <script type="module">
+                import { completeSignIn } from './auth.js';
+    
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, "\\$&");
+                    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+                    const results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+    
+                const mainStatus = document.getElementById('mainStatus');
+                const subStatus = document.getElementById('subStatus');
+                const tokenSection = document.getElementById('tokenSection');
+                const idTokenDisplay = document.getElementById('idTokenDisplay');
+    
+                document.addEventListener("DOMContentLoaded", async () => {
+                    const email = getParameterByName('email');
+                    const url = window.location.href;
+    
+                    try {
+                        if (!email) {
+                            throw new Error("No email found in URL. Please make sure the link is correct.");
+                        }
+                        const user = await completeSignIn(url, email);
+                        const idToken = await user.getIdToken();
+                        mainStatus.style.display = 'none';
+                        subStatus.style.display = 'none';
+                        idTokenDisplay.value = idToken;
+                        tokenSection.style.display = 'block';
+                    } catch (error) {
+                        mainStatus.textContent = 'Error';
+                        subStatus.textContent = `Sign-in failed: ${error.message}`;
+                        mainStatus.classList.add('error');
+                        console.error("Sign-in failed:", error);
+                    }
+                });
+    
+                function copyToken() {
+                    idTokenDisplay.select();
+                    document.execCommand('copy');
+                    subStatus.textContent = 'Token copied!';
+                    subStatus.style.display = 'block';
+                }
+                window.copyToken = copyToken;
+            </script></body>
 </html>

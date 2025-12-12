@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,14 +25,12 @@ export async function sendLink(email) {
     window.localStorage.setItem('emailForSignIn', email);
 }
 
-export async function completeSignIn(url) {
+export async function completeSignIn(url, email) {
     if (isSignInWithEmailLink(auth, url)) {
-        let email = window.localStorage.getItem('emailForSignIn');
         if (!email) {
-            email = window.prompt('Please provide your email for confirmation');
+            throw new Error("Email is required to complete sign-in.");
         }
         const result = await signInWithEmailLink(auth, email, url);
-        window.localStorage.removeItem('emailForSignIn');
         return result.user;
     } else {
         throw new Error("This is not a valid sign-in link.");
