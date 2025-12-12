@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qualia Sign-In Complete</title>
+    <style>
+        body { font-family: sans-serif; background-color: #282c34; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background-color: #3b3f46; padding: 2em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); text-align: center; width: 80%; max-width: 600px; }
+        h1 { color: #98c379; }
+        h2 { color: #61afef; margin-top: 1.5em; }
+        p { font-size: 1.1em; margin-bottom: 1.5em; }
+        textarea { width: 90%; height: 100px; background-color: #444; color: #eee; border: 1px solid #555; padding: 10px; border-radius: 4px; resize: none; }
+        button { padding: 0.8em 1.5em; border: none; border-radius: 4px; background-color: #61afef; color: white; cursor: pointer; font-size: 1em; margin-top: 1em; }
+        .error { color: #e06c75; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="mainStatus">Verifying...</h1>
+        <p id="subStatus">Please wait.</p>
+        <div id="tokenSection" style="display: none;">
+            <h2>Sign-in Complete!</h2>
+            <p>Copy the token below and paste it into the Qualia application.</p>
+            <textarea id="idTokenDisplay" readonly></textarea>
+            <button onclick="copyToken()">Copy Token</button>
+        </div>
+    </div>
+    <script type="module">
+        import { completeSignIn } from './auth.js';
+        const mainStatus = document.getElementById('mainStatus');
+        const subStatus = document.getElementById('subStatus');
+        const tokenSection = document.getElementById('tokenSection');
+        const idTokenDisplay = document.getElementById('idTokenDisplay');
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const user = await completeSignIn(window.location.href);
+                const idToken = await user.getIdToken();
+                mainStatus.style.display = 'none';
+                subStatus.style.display = 'none';
+                idTokenDisplay.value = idToken;
+                tokenSection.style.display = 'block';
+            } catch (error) {
+                mainStatus.textContent = 'Error';
+                subStatus.textContent = `Sign-in failed: ${error.message}`;
+                mainStatus.classList.add('error');
+            }
+        });
+        function copyToken() {
+            idTokenDisplay.select();
+            document.execCommand('copy');
+            subStatus.textContent = 'Token copied!';
+            subStatus.style.display = 'block';
+        }
+        window.copyToken = copyToken;
+    </script>
+</body>
+</html>
